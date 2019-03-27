@@ -1,0 +1,57 @@
+<dataConfig>
+  
+  <dataSource type="FileDataSource" name="plaintext" basePath="/Users/xhero"/>
+  <document>
+
+    <!-- this outer processor generates a list of files satisfying the conditions
+    specified in the attributes -->
+    <entity name="f" processor="FileListEntityProcessor"
+      fileName=".*xml"
+      rootEntity="false"
+      dataSource="null"
+      baseDir="/Users/xhero/TEI-transform">
+
+      <entity name="onstage"
+        processor="XPathEntityProcessor"
+        url="${f.fileAbsolutePath}"
+        transformer="DateFormatTransformer,TemplateTransformer,RegexTransformer,LogTransformer"
+        forEach="/TEI">
+
+        <!-- Pick this value up from the feed level and apply to all documents -->
+        <field column="id" template="${f.fileAbsolutePath}" />
+        
+        <field column="composer_ss" xpath="/TEI/text/body/p/name[@role='cmp']" />
+        <field column="interpreter_ss" xpath="/TEI/text/body/p/name[@role='int']" />
+        <field column="professor_ss" xpath="/TEI/text/body/p/name[@role='prof']" />
+        <field column="other_ss" xpath="/TEI/text/body/p/name[@role='var']" />
+        
+        <field column="images_ss" xpath="/TEI/text/body/p/pb/@facs" />
+      
+        <field column="place_s" xpath="/TEI/text/body/p/placeName/@key" />
+        <field column="series_s" xpath="/TEI/text/body/p/name[@type='series']/@key" />
+        
+        <field column="collection_s" xpath="/TEI/teiHeader/fileDesc/seriesStmt/idno" />
+      
+        <field column="title" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title" />
+        <field column="title_date" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title/date" />
+      
+        <field column="title_s" template="${onstage.title} ${onstage.title_date}" />
+      
+        <!--field column="date_short" xpath="/TEI/text/body/p/date/@when" regex="(^[0-9]{4})" /-->
+        <field column="year_i" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title/date/@when" regex="(^[0-9]{4})" />
+        
+        <field column="pages_txt" xpath="/TEI/text/body/p/page" />
+        
+        <!-- this indexes the <p> from the pages and reads the file
+        <field column="pages_s" xpath="/TEI/text/body/p/p" regex="([\w-]+(?:\.\w+)*$)" />
+        <entity processor="PlainTextEntityProcessor" name="x" url="/Users/xhero/onstage-fulltext/${onstage.year_i}-${onstage.pages_s}" dataSource="plaintext">
+        <field column="plainText" name="ocr_txt"/>
+        </entity>
+        -->
+      
+      </entity>
+            
+    </entity>
+ 
+  </document>
+</dataConfig>
