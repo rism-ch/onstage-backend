@@ -40,7 +40,7 @@
         <field column="year_i" xpath="/TEI/text/body/p/date/@when" regex="(^[0-9]{4})" />
         <!--field column="year_i" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title/date/@when" regex="(^[0-9]{4})" /-->
         
-        <!--field column="pages_txt" xpath="/TEI/text/body/p/page" /-->
+        <field column="pages_txt" xpath="/TEI/text/body/p/page" />
         
         <!-- this indexes the <p> from the pages and reads the file
         <field column="pages_s" xpath="/TEI/text/body/p/p" regex="([\w-]+(?:\.\w+)*$)" />
