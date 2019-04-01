@@ -24,3 +24,16 @@ cd solr-8.0.0
 ```
 
 If everything is ok, solr should be running on ```http://localhost:8983```
+
+# Data installation and index
+
+1) Unzip the sample data (which is the whole onstage dataset at the moment of writing) again in a suitable place
+```
+unzip sample-data/TEI-transform.zip
+```
+
+2) Modify the SOLR index config file so it finds your directory ```onstage/conf/onstage-import.xml```. You need to set ```basePath``` to the directory that contains the ```TEI-transform/``` dir, and baseDir (circa line 12) to the full path of ```TEI-transform/```.
+
+3) In the SOLR console, select the ```onstage``` core and in ``DataImport``` execute the importer.
+
+4) If everything is good, running an empty query (the default in the query window) should return all records.
