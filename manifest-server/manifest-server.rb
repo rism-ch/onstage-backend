@@ -48,10 +48,8 @@ def create_manifest(dir, images)
 
     image = IIIF::Presentation::Annotation.new
     image["on"] = canvas['@id']
-    ## Uncomment these two prints to see the progress of the HTTP reqs.
-    #print "-"
+
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(service_id: image_url)
-    #print "."
     image.resource = image_resource
   
     canvas.width = image.resource['width']
@@ -76,7 +74,11 @@ def get_images(xml_file)
     return nil, nil
   end
 
-  images = xml_file.xpath("//xmlns:p/xmlns:pb")
+  begin
+    images = xml_file.xpath("//xmlns:p/xmlns:pb")
+  rescue Nokogiri::XML::XPath::SyntaxError
+    halt 500
+  end
 
   files = images.each.collect {|t| t.attribute("facs").value.match(/([\w-]+(?:\.\w+)*$)/)[0]}
   path = images[0].attribute("facs").value.match(/(.*)\//)[0]
