@@ -37,3 +37,11 @@ unzip sample-data/TEI-transform.zip
 3) In the SOLR console, select the ```onstage``` core and in ```DataImport``` execute the importer.
 
 4) If everything is good, running an empty query (the default in the query window) should return all records.
+
+# Data removal
+
+Sometimes it is useful to wipe the index... On the macchine running it:
+
+```
+curl http://localhost:8983/solr/onstage/update?commit=true -H "Content-Type: text/xml" --data-binary '<delete><query>*:*</query></delete>'
+```

@@ -18,7 +18,7 @@
         forEach="/TEI">
 
         <!-- Pick this value up from the feed level and apply to all documents -->
-        <field column="id" template="${f.fileAbsolutePath}" />
+        <field column="id" template="${f.fileAbsolutePath}" regex="([\w-]+(?:\.\w+)*$)" />
         
         <field column="composer_ss" xpath="/TEI/text/body/p/name[@role='cmp']" />
         <field column="interpreter_ss" xpath="/TEI/text/body/p/name[@role='int']" />
