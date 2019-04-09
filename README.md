@@ -56,7 +56,7 @@ bundle install
 bundle exec ruby manifest-server.rb
 ```
 
-This will run the server on localhost. To make it actually work edit ```manifest-server.rb``` and set ```IIF_PATH``` and ```TEI_PATH``` to the root level of the images and the transformed TEI files used for indexing.
+This will run the server on localhost. To make it actually work edit ```manifest-server.rb``` and set ```IIF_PATH``` and ```TEI_PATH``` to the URL of the IIIF server and the transformed TEI files used for indexing.
 
 The server can also be deployed with Passenger as a normal ruby app (but using sinatra instead of rails):
 
