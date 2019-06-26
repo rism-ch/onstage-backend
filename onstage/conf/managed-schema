@@ -513,8 +513,16 @@
   <dynamicField name="*_p" type="location" indexed="true" stored="true"/>
   <copyField source="interpreter_ss" dest="person_txt"/>
   <copyField source="composer_ss" dest="person_txt"/>
-  <copyField source="*" dest="_text_"/>
   <copyField source="professor_ss" dest="person_txt"/>
   <copyField source="other_ss" dest="person_txt"/>
-  <copyField source="performer_ss" dest="person_txt"/>
+
+  <copyField source="interpreter_ss" dest="interpreter_txt"/>
+  <copyField source="professor_ss" dest="interpreter_txt"/>
+  <copyField source="other_ss" dest="interpreter_txt"/>
+
+  <copyField source="composer_ss" dest="composer_txt"/>
+  <copyField source="series_s" dest="series_txt"/>
+  <copyField source="place_s" dest="place_txt"/>
+
+  <copyField source="*" dest="_text_"/>
 </schema>

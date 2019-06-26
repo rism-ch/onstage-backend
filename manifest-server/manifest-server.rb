@@ -3,7 +3,13 @@ require 'sinatra'
 require 'awesome_print'
 require 'iiif/presentation'
 require 'nokogiri'
+require 'json'
 
+include Update
+
+configure do
+  set :bind, '0.0.0.0'
+end
 
 # WHY THE DEFAULS ARE ASININE??????
 # This fixes an encoding issue with certain requests
@@ -96,6 +102,44 @@ get '/manifest/:file' do
   create_manifest(dir, files)
 end
 
+get '/solr_status' do
+  return get_solr_status.to_json
+end
+
 not_found do
-  'This is nowhere to be found.'
+  'Resouce not found.'
+end
+
+
+# Courtsy of GitHib!
+def verify_signature(request)
+  secret_token = "Put_a_secret_token_here"
+  request.body.rewind
+  payload_body = request.body.read
+  signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret_token, payload_body)
+  return Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+end
+
+post '/update' do
+
+  if !verify_signature(request)
+    halt 500  , "Invalid signature"
+  end
+
+  event = request.env['HTTP_X_GITHUB_EVENT']
+  request.body.rewind
+
+  case event
+  when 'push'
+    payload = JSON.parse(request.body.read)
+    repo = payload['repository']['full_name']
+    user = payload['sender']['login']
+    user_url = payload['sender']['html_url']
+    puts "This is a push event on '#{repo}' by '#{user}': #{user_url}"
+
+    # Do the maintainance operations
+    update_index
+  else
+    puts "Unmanaged '#{event}'"
+  end
 end

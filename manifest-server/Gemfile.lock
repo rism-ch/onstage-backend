@@ -19,9 +19,11 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     awesome_print (1.8.0)
+    builder (3.2.3)
     concurrent-ruby (1.1.5)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
+    git (1.5.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     iiif-presentation (0.2.0)
@@ -36,6 +38,9 @@ GEM
     nokogiri (1.10.2)
       mini_portile2 (~> 2.4.0)
     rack (2.0.7)
+    rsolr (2.2.1)
+      builder (>= 2.1.2)
+      faraday (>= 0.9.0)
     thread_safe (0.3.6)
     tilt (2.0.9)
     tzinfo (1.2.5)
@@ -46,8 +51,10 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  git
   iiif-presentation
   nokogiri
+  rsolr
   sinatra!
 
 BUNDLED WITH

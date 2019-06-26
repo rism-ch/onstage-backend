@@ -45,3 +45,13 @@ Sometimes it is useful to wipe the index... On the macchine running it:
 ```
 curl http://localhost:8983/solr/onstage/update?commit=true -H "Content-Type: text/xml" --data-binary '<delete><query>*:*</query></delete>'
 ```
+
+Configuring the GIT auto-pull backend
+--------------------------------------
+
+A local copy of the git repo with the TEI files should be configured to use a user that is read only for the repo. A password can be saved, or if the repo is public no password is needed.
+Ensure that the password password prompt is not shown anymore or the webhook will not work
+
+git clone <the-repo>
+git config credential.helper store
+git pull

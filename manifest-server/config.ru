@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'sinatra'
+Dir['./lib/*.rb'].each { |path| require path }
+
 require File.expand_path '../manifest-server.rb', __FILE__
 
-run Sinatra::Application
+run Sinatra::Application.run!
