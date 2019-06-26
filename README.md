@@ -80,7 +80,7 @@ The server can also be deployed with Passenger as a normal ruby app (but using s
                 Order allow,deny
                 Allow from all
         </Directory>
-        RailsEnv production
+        RackEnv production
 	Header set Access-Control-Allow-Origin "*"
 </VirtualHost>
 ```
@@ -92,3 +92,8 @@ You can interrogate the server by passing the xml file name of one of the items 
 ```
 curl http://<server>/manifest/CH_Gc_prg_12-1140.xml
 ```
+
+Run locally
+-----------
+
+```exec rackup config.ru```
