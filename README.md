@@ -46,15 +46,32 @@ Sometimes it is useful to wipe the index... On the macchine running it:
 curl http://localhost:8983/solr/onstage/update?commit=true -H "Content-Type: text/xml" --data-binary '<delete><query>*:*</query></delete>'
 ```
 
+# Poll the index
+A status of the import is availabe at ```/solr_status```.
+
 Configuring the GIT auto-pull backend
 --------------------------------------
 
 A local copy of the git repo with the TEI files should be configured to use a user that is read only for the repo. A password can be saved, or if the repo is public no password is needed.
 Ensure that the password password prompt is not shown anymore or the webhook will not work
 
+```
 git clone <the-repo>
+cd the-repo
 git config credential.helper store
 git pull
+```
+
+In a production env things can be more comples, as the server is often run with a low privilege user. This requires some magic more. For example, using the user ```nobody```:
+
+```
+git clone <the-repo>
+chown -R nobody:nouser the-repo
+cd the-repo
+sudo -u nobody touch .credential
+sudo -u nobody git config credential.helper 'store --file=<the-repo-full-path>/.credential'
+sudo -u nobody git pull
+```
 
 Run the manifest sever
 ----------------------
