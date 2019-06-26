@@ -55,3 +55,40 @@ Ensure that the password password prompt is not shown anymore or the webhook wil
 git clone <the-repo>
 git config credential.helper store
 git pull
+
+Run the manifest sever
+----------------------
+
+The JSON manifest files for diva can be generated on the fly with the handy server in ```manifest-server```. It is a small http server written with Sinatra. To run it, you need ruby 2 and bundler, then run:
+
+```
+bundle install
+bundle exec ruby manifest-server.rb
+```
+
+This will run the server on localhost. To make it actually work edit ```manifest-server.rb``` and set ```IIF_PATH``` and ```TEI_PATH``` to the URL of the IIIF server and the transformed TEI files used for indexing.
+
+The server can also be deployed with Passenger as a normal ruby app (but using sinatra instead of rails):
+
+```
+<VirtualHost *:80>
+        # ServerName www..org
+        DocumentRoot /var/www/onstage-backend/manifest-server/public
+        <Directory "/var/www/onstage-backend/manifest-serverpublic">
+                Options All -Indexes +ExecCGI -Includes +MultiViews
+                AllowOverride All
+                Order allow,deny
+                Allow from all
+        </Directory>
+        RailsEnv production
+	Header set Access-Control-Allow-Origin "*"
+</VirtualHost>
+```
+
+Note the ```Access-Control-Allow-Origin```, this is necessary so Diva.js can access the generated json files.
+
+You can interrogate the server by passing the xml file name of one of the items in the OnStage database:
+
+```
+curl http://<server>/manifest/CH_Gc_prg_12-1140.xml
+```
