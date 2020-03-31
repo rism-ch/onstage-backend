@@ -29,15 +29,15 @@ module Faraday
 end
 
 IIF_PATH="http://d-lib.rism-ch.org/cgi-bin/iipsrv.fcgi?IIIF=/usr/local/images/raw/lausanne/"
-TEI_PATH="/Users/xhero/TEI-transform"
+TEI_PATH="path_to"
 #IIF_PATH="https://iiif.rism-ch.org/iiif/"
 
-def create_manifest(dir, images)
+def create_manifest(dir, images, title)
   
   # Create the base manifest file
   seed = {
       '@id' => "https://iiif.rism-ch.org/manifest/#{dir}.json",
-      'label' => dir,
+      'label' => title,
       'related' => "http://www.rism-ch.org/catalog/#{dir}"
   }
   # Any options you add are added to the object
@@ -99,7 +99,7 @@ get '/manifest/:file' do
     halt 404
   end
   
-  create_manifest(dir, files)
+  create_manifest(dir, files, params[:file].chomp(".xml"))
 end
 
 get '/solr_status' do
