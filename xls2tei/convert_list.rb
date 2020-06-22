@@ -57,6 +57,7 @@ def unpack_names(composer_list, type)
             sigla, id = matches[1].split(":") # 1 element is withut brackets
             name = composer_line.sub(matches[0], '') # note the 0 elements is with brackes
             name.strip!
+            name.tr!('"', '')
 
             if sigla == "RISM"
                 ref = "ref=\"#{RISM_PEOPLE_URL}#{id}\""
@@ -64,7 +65,7 @@ def unpack_names(composer_list, type)
 
             #puts "<name key=\"#{name}\" #{ref} type=\"person\" role=\"cmp\">#{name}</name>"
         else
-            name = composer_line.strip
+            name = composer_line.strip.tr('"', '')
         end
 
         lines << "<name key=\"#{name}\" #{ref} type=\"person\" role=\"#{type}\">#{name}</name>"
@@ -102,7 +103,7 @@ def make_date_when(date)
     dates = []
     dates_long = []
 
-    code = date.tr('\[\]\-\?\.', '')
+    code = date.tr('\[\]\-\?\.', '').rjust(8, '0')
     dates <<  "<date when=\"#{code}\"/>\n"
 
     long_date = "#{code[6, 2]}/#{code[4, 2]}/#{code[0, 4]}"
