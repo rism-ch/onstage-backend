@@ -1,3 +1,8 @@
 /onstage/data/index
 /onstage/data/tlog
 /onstage/data/snapshot_metadata
+
+/xls2tei/empty_files
+/xls2tei/ocr_output
+/xls2tei/tei_output
+/xls2tei/input.csv
