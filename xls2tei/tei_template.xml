@@ -4,18 +4,19 @@
   <teiHeader>
     <fileDesc>
         <titleStmt>
-            <title>HEMU Conservatoire de Genève - Programme de concert</title>
+            <title>La Musicale Genève</title>
         </titleStmt>
         <editionStmt>
             <edition>TEI P5.1 Edition</edition>
             <respStmt>
                 <resp>
-                    <persName>Claudio Bacciagaluppi</persName>
-                    <persName>Paolo Boschetti</persName>
-                    <persName>Laurent Pugin</persName>
-                    <persName>Violeta Struijk van Bergen</persName>
+                    <persName>Florence Weber</persName>
+                    <persName>Lynn Beutler</persName>
                     <persName>Rodolfo Zitellini</persName>
-                    <date when="2020-06">Janvier 2016</date>
+                    <persName>Claudio Bacciagaluppi</persName>
+                    <persName>Fabienne Grandjean</persName>
+                    <persName>Sylvain Féjoz</persName>
+                    <date when="2020-06">2020</date>
                 </resp>
                 <name>Bureau Suisse du RISM</name>
             </respStmt>
@@ -24,13 +25,16 @@
             <publisher><orgName xml:base="http://www.rism-ch.org">Bureau Suisse du RISM</orgName></publisher>
         </publicationStmt>
 	    <seriesStmt>
-	     <idno type="collection">ch_gc</idno>
+	     <idno type="collection">ch_gm</idno>
 	    </seriesStmt>
       <sourceDesc>
 		<bibl>
         $$SRCDESC$$$
 		</bibl>
       </sourceDesc>
+      <notesStmt>
+      $$NOTES$$
+      </notesStmt>
     </fileDesc>
   </teiHeader>
   <text>

@@ -1,7 +1,7 @@
 require "csv"
 require "awesome_print"
 require 'nokogiri'
-
+require "rexml/document" 
 
 # Make empty files
 # find . -name "*.tif" -print0 | xargs -0 -I, touch ../empty_files/,
@@ -15,28 +15,17 @@ require 'nokogiri'
 # find . -name bmu_\* -print | while read filename; do tesseract $filename $filename.txt -l fra; done
 
 headers = [
-    :ch,
-    :complete_names,
-    :complate_al,
-    :line_no,
-    :directory,
-    :images,
     :cote,
     :file_names,
-    :doc_no,
-    :plan,
     :saison,
-    :localisation,
     :date,
     :collation,
-    :type,
     :place,
     :title,
-    :title_unused,
-    :ittle_unided_second,
-    :title_complement,
     :composers,
-    :interpreters
+    :interpreters,
+    :serie,
+    :notes
 ]
 
 RISM_PEOPLE_URL = "https://muscat.rism.info/admin/people/"
@@ -82,16 +71,26 @@ def find_images(entry)
         name = File.basename(image_name)
 
         if !File.exist?(OCR_DIR + "/#{name_no_ext}.txt")
-            puts name_no_ext
+            puts name_no_ext.red
         else
             fulltext = File.read(OCR_DIR + "/#{name_no_ext}.txt").encode('UTF-8', :invalid => :replace, :undef => :replace).strip
         end
 
+        # Strip all empty or whitespace lines
+        fulltext = fulltext.gsub(/^$\n/, '')
+        fulltext_strip = ""
+        fulltext.each_line do |l|
+            l = l.strip
+            l = l.gsub(/^$\n/, '')
+            next if l.empty?
+            fulltext_strip += l + "\n"
+        end
+
         # Create the CDATA element
         tmp = Nokogiri::XML::Document.new
-        page_cdata = tmp.create_cdata(fulltext)
+        page_cdata = tmp.create_cdata(fulltext_strip)
 
-        content = "<pb facs=\"/pyr_#{name}\"/>\n"
+        content = "<pb facs=\"CH_Gmu_prg/pyr_#{name}\"/>\n"
         content += "<page>#{page_cdata}</page>"
 
         pages << content
@@ -103,18 +102,45 @@ def make_date_when(date)
     dates = []
     dates_long = []
 
-    code = date.tr('\[\]\-\?\.', '').rjust(8, '0')
-    dates <<  "<date when=\"#{code}\"/>\n"
+    dates = ""
+    dates_long = ""
+    date.split(";").each do |d|
+        code = d.strip.tr('\[\]\-\?\.', '').rjust(8, '0')
+        dates +=  "<date when=\"#{code}\"/>\n"
 
-    long_date = "#{code[6, 2]}/#{code[4, 2]}/#{code[0, 4]}"
-    dates_long <<  "<date when=\"#{long_date}\"/>"
+        long_date = "#{code[6, 2]}/#{code[4, 2]}/#{code[0, 4]}"
+        dates_long +=  "<date when=\"#{long_date}\"/>"
+    end
 
     return dates, dates_long
 end
 
+def split_notes(notes)
+    return "" if notes == nil || notes.empty?
+
+    xml = ""
+    notes.split(";").each do |n|
+        next if n.strip.empty?
+        xml += "<note>#{n.strip}</note>\n"
+    end
+
+    return xml
+end
+
+def split_place(place)
+    return "" if place == nil || place.empty?
+
+    xml = ""
+    place.split(";").each do |n|
+        xml += "<placeName>#{n.strip}</placeName>\n"
+    end
+
+    return xml
+end
+
 @template = File.open("tei_template.xml", "r:UTF-8", &:read)
-CSV::foreach("input.csv", col_sep: "\t", headers: headers) do |r|
-    
+CSV::foreach("input_revised.csv", col_sep: "\t", headers: headers) do |r|
+
     composer_lines = unpack_names(r[:composers], "cmp")
     interpreter_lines = unpack_names(r[:interpreters], "int")
 
@@ -122,13 +148,15 @@ CSV::foreach("input.csv", col_sep: "\t", headers: headers) do |r|
     dates, dates_long = make_date_when(r[:date])
     
     # Start buinding the Source Description
-    srcdesc = "<title>#{r[:title]}#{dates_long.first}</title>\n"
+    srcdesc = "<title>#{r[:title]}#{dates_long}</title>\n"
     srcdesc += "<series>#{r[:saison]}</series>\n"
-    srcdesc += "<placeName>#{r[:place]}</placeName>\n"
+    #srcdesc += "<placeName>#{r[:place]}</placeName>\n"
+    srcdesc += split_place(r[:place])
     srcdesc += "<orgName role=\"holding\">Bibliothèque du Conservatoire de Musique de Genève; <link target=\"http://www.cmusge.ch/contact_bibliotheque\"/></orgName>\n"
+    srcdesc += "<idno>#{r[:cote]}</idno>\n"
   
     # Now build the content
-    content = dates.join("\n")
+    content = dates
     content += "<title>#{r[:title]}</title>\n" if r[:title]
     content += "<placeName key=\"#{r[:place]}\"/>\n" if r[:place]
     content += "<name key=\"#{r[:saison]}\" type=\"series\"/>\n" if r[:saison]
@@ -138,12 +166,26 @@ CSV::foreach("input.csv", col_sep: "\t", headers: headers) do |r|
 
     content += pages.join("\n")
 
+    # Finally the notes
+    notes = split_notes(r[:notes])
+
     final_xml = @template.gsub(/\$\$SRCDESC\$\$\$/, srcdesc)
+    final_xml = final_xml.gsub(/\$\$NOTES\$\$/, notes)
     final_xml = final_xml.gsub(/\$\$CONTENT\$\$/, content)
+
+    # Make a nice formatted version of the xml
+    formatted_xml = ""
+    doc = REXML::Document.new(final_xml)
+    formatter = REXML::Formatters::Pretty.new
+    
+    # Compact uses as little whitespace as possible
+    formatter.compact = true
+    formatter.write(doc, formatted_xml)
 
     # Commit to file
     File.open(OUTPUT_DIR + "/#{r[:file_names].downcase}.xml", 'w') do |outf|
-        outf.write(final_xml)
+        outf.write(formatted_xml)
     end
+
 
 end
