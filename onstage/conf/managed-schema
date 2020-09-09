@@ -522,7 +522,7 @@
 
   <copyField source="composer_ss" dest="composer_txt"/>
   <copyField source="series_s" dest="series_txt"/>
-  <copyField source="place_s" dest="place_txt"/>
+  <copyField source="place_ss" dest="place_txt"/>
 
   <copyField source="*" dest="_text_"/>
 </schema>

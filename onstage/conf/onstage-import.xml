@@ -1,6 +1,6 @@
 <dataConfig>
   
-  <dataSource type="FileDataSource" name="plaintext" basePath="/Users/xhero"/>
+  <dataSource type="FileDataSource" name="plaintext" basePath="PATH"/>
   <document>
 
     <!-- this outer processor generates a list of files satisfying the conditions
@@ -9,11 +9,11 @@
       fileName=".*xml"
       rootEntity="false"
       dataSource="null"
-      baseDir="/Users/xhero/TEI-transform">
+      baseDir="PATH">
 
       <entity name="onstage"
         processor="XPathEntityProcessor"
-        url="${f.fileAbsolutePath}"
+      url="${f.fileAbsolutePath}"
         transformer="DateFormatTransformer,TemplateTransformer,RegexTransformer,LogTransformer"
         forEach="/TEI">
 
@@ -27,7 +27,7 @@
         
         <field column="images_ss" xpath="/TEI/text/body/p/pb/@facs" />
       
-        <field column="place_s" xpath="/TEI/text/body/p/placeName/@key" />
+        <field column="place_ss" xpath="/TEI/text/body/p/placeName/@key" />
         <field column="series_s" xpath="/TEI/text/body/p/name[@type='series']/@key" />
         
         <field column="collection_s" xpath="/TEI/teiHeader/fileDesc/seriesStmt/idno" />
@@ -37,7 +37,7 @@
       
         <field column="title_s" template="${onstage.title} ${onstage.title_date}" />
       
-        <field column="year_i" xpath="/TEI/text/body/p/date/@when" regex="(^[0-9]{4})" />
+        <field column="year_is" xpath="/TEI/text/body/p/date/@when" regex="(^[0-9]{4})" />
         <!--field column="year_i" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title/date/@when" regex="(^[0-9]{4})" /-->
         
         <field column="pages_txt" xpath="/TEI/text/body/p/page" />

@@ -127,12 +127,16 @@ def split_notes(notes)
     return xml
 end
 
-def split_place(place)
+def split_place(place, key=false)
     return "" if place == nil || place.empty?
 
     xml = ""
     place.split(";").each do |n|
-        xml += "<placeName>#{n.strip}</placeName>\n"
+        if key
+            xml += "<placeName key=\"#{n.strip}\" />\n"
+        else
+            xml += "<placeName>#{n.strip}</placeName>\n"
+        end
     end
 
     return xml
@@ -158,7 +162,7 @@ CSV::foreach("input_revised.csv", col_sep: "\t", headers: headers) do |r|
     # Now build the content
     content = dates
     content += "<title>#{r[:title]}</title>\n" if r[:title]
-    content += "<placeName key=\"#{r[:place]}\"/>\n" if r[:place]
+    content += split_place(r[:place], true) # different in here!
     content += "<name key=\"#{r[:saison]}\" type=\"series\"/>\n" if r[:saison]
 
     content += composer_lines.join("\n") + "\n" if !composer_lines.empty?
