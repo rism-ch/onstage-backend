@@ -440,7 +440,7 @@
   </fieldType>
   <field name="_nest_path_" type="_nest_path_"/>
   <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
-  <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
+  <field name="_text_" type="text_fr" multiValued="true" indexed="true" stored="true"/>
   <field name="_version_" type="plong" indexed="false" stored="false"/>
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
   <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true"/>
@@ -489,7 +489,7 @@
   <dynamicField name="*_point" type="point" indexed="true" stored="true"/>
   <dynamicField name="*_srpt" type="location_rpt" indexed="true" stored="true"/>
   <dynamicField name="attr_*" type="text_general" multiValued="true" indexed="true" stored="true"/>
-  <dynamicField name="*_txt" type="text_general" indexed="true" stored="true"/>
+  <dynamicField name="*_txt" type="text_fr" indexed="true" stored="true" multiValued="true"/>
   <dynamicField name="*_str" type="strings" docValues="true" indexed="false" stored="false" useDocValuesAsStored="false"/>
   <dynamicField name="*_dts" type="pdate" multiValued="true" indexed="true" stored="true"/>
   <dynamicField name="*_dpf" type="delimited_payloads_float" indexed="true" stored="true"/>
@@ -526,4 +526,10 @@
   <copyField source="place_ss" dest="place_txt"/>
 
   <copyField source="*" dest="_text_"/>
+  <copyField source="person_txt" dest="_text_"/>
+  <copyField source="interpreter_txt" dest="_text_"/>
+  <copyField source="composer_txt" dest="_text_"/>
+  <copyField source="series_txt" dest="_text_"/>
+  <copyField source="place_txt" dest="_text_"/>
+  <copyField source="fulldate_ss" dest="_text_"/>
 </schema>

@@ -47,7 +47,6 @@
         <field column="date_ss" sourceColName="fulldate_ss" dateTimeFormat="yyyyMMdd" />
         <field column="date_dts" sourceColName="fulldate_ss" dateTimeFormat="yyyyMMdd" />
 
-
         <field column="pages_txt" xpath="/TEI/text/body/p/page" />
         
         <!-- this indexes the <p> from the pages and reads the file
