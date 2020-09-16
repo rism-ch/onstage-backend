@@ -47,6 +47,9 @@
         <field column="date_ss" sourceColName="fulldate_ss" dateTimeFormat="yyyyMMdd" />
         <field column="date_dts" sourceColName="fulldate_ss" dateTimeFormat="yyyyMMdd" />
 
+        <field column="note_ss" xpath="/TEI/teiHeader/fileDesc/notesStmt/note" />
+        <field column="idno_ss" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/idno" />
+
         <field column="pages_txt" xpath="/TEI/text/body/p/page" />
         
         <!-- this indexes the <p> from the pages and reads the file

@@ -440,7 +440,7 @@
   </fieldType>
   <field name="_nest_path_" type="_nest_path_"/>
   <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
-  <field name="_text_" type="text_fr" multiValued="true" indexed="true" stored="true"/>
+  <field name="_text_" type="text_fr" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="plong" indexed="false" stored="false"/>
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
   <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true"/>
@@ -525,6 +525,9 @@
   <copyField source="series_s" dest="series_txt"/>
   <copyField source="place_ss" dest="place_txt"/>
 
+  <copyField source="note_ss" dest="note_txt"/>
+  <copyField source="idno_ss" dest="idno_txt"/>
+
   <copyField source="*" dest="_text_"/>
   <copyField source="person_txt" dest="_text_"/>
   <copyField source="interpreter_txt" dest="_text_"/>
@@ -532,4 +535,6 @@
   <copyField source="series_txt" dest="_text_"/>
   <copyField source="place_txt" dest="_text_"/>
   <copyField source="fulldate_ss" dest="_text_"/>
+  <copyField source="note_txt" dest="_text_"/>
+  <copyField source="idno_txt" dest="_text_"/>
 </schema>
