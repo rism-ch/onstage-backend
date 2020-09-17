@@ -133,9 +133,9 @@ def split_place(place, key=false)
     xml = ""
     place.split(";").each do |n|
         if key
-            xml += "<placeName key=\"#{n.strip}\" />\n"
+            xml += "<placeName key=\"#{n.strip.gsub(';', '')}\" />\n"
         else
-            xml += "<placeName>#{n.strip}</placeName>\n"
+            xml += "<placeName>#{n.strip.gsub(';', '')}</placeName>\n"
         end
     end
 
@@ -151,8 +151,10 @@ CSV::foreach("input_revised.csv", col_sep: "\t", headers: headers) do |r|
     pages = find_images(r[:file_names])
     dates, dates_long = make_date_when(r[:date])
     
+    title = r[:title] ? r[:title].strip.gsub("\n", "") : "[sans titre]"
+
     # Start buinding the Source Description
-    srcdesc = "<title>#{r[:title]}#{dates_long}</title>\n"
+    srcdesc = "<title>#{title}#{dates_long}</title>\n"
     srcdesc += "<series>#{r[:saison]}</series>\n"
     #srcdesc += "<placeName>#{r[:place]}</placeName>\n"
     srcdesc += split_place(r[:place])
@@ -161,7 +163,7 @@ CSV::foreach("input_revised.csv", col_sep: "\t", headers: headers) do |r|
   
     # Now build the content
     content = dates
-    content += "<title>#{r[:title]}</title>\n" if r[:title]
+    content += "<title>#{title}</title>\n" if r[:title]
     content += split_place(r[:place], true) # different in here!
     content += "<name key=\"#{r[:saison]}\" type=\"series\"/>\n" if r[:saison]
 
@@ -184,6 +186,7 @@ CSV::foreach("input_revised.csv", col_sep: "\t", headers: headers) do |r|
     
     # Compact uses as little whitespace as possible
     formatter.compact = true
+    formatter.width = 20000
     formatter.write(doc, formatted_xml)
 
     # Commit to file

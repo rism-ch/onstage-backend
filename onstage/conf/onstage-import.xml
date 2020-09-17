@@ -32,11 +32,12 @@
         
         <field column="collection_s" xpath="/TEI/teiHeader/fileDesc/seriesStmt/idno" />
       
-        <field column="title" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title" />
+        <field column="title_s" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title" />
+        <!--
         <field column="title_date" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title/date" />
-      
         <field column="title_s" template="${onstage.title} ${onstage.title_date}" />
-      
+        -->
+
         <field column="year_is" xpath="/TEI/text/body/p/date/@when" regex="(^[0-9]{4})" />
         <!--field column="year_i" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title/date/@when" regex="(^[0-9]{4})" /-->
         
