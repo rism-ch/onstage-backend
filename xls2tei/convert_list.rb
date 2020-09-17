@@ -143,7 +143,7 @@ def split_place(place, key=false)
 end
 
 @template = File.open("tei_template.xml", "r:UTF-8", &:read)
-CSV::foreach("input_revised.csv", col_sep: "\t", headers: headers) do |r|
+CSV::foreach("example_data.csv", col_sep: "\t", headers: headers) do |r|
 
     composer_lines = unpack_names(r[:composers], "cmp")
     interpreter_lines = unpack_names(r[:interpreters], "int")
