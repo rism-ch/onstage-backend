@@ -1,5 +1,4 @@
 <dataConfig>
-  
   <dataSource type="FileDataSource" name="plaintext" basePath="/Users/xhero/devel/onstage-tei/"/>
   <document>
 
@@ -39,14 +38,17 @@
         -->
 
         <field column="year_is" xpath="/TEI/text/body/p/date/@when" regex="(^[0-9]{4})" />
-        <!--field column="year_i" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/title/date/@when" regex="(^[0-9]{4})" /-->
+        <!--
+        <field column="month_ss" xpath="/TEI/text/body/p/date/@when" regex="^.{4}(..)" />
+        <field column="day_ss" xpath="/TEI/text/body/p/date/@when" regex="^.{6}(..)" />
+        -->
+        <field column="fulldate_ss" xpath="/TEI/text/body/p/date/@when" />
         
-        <field column="fulldate_ss" xpath="/TEI/text/body/p/date/@when" regex="(----)" replaceWith="0101" />
-        <field column="fulldate_ss" sourceColName="fulldate_ss" regex="(--)" replaceWith="01" />
-        <field column="fulldate_ss" sourceColName="fulldate_ss" regex="(0000)" replaceWith="0101" />
+        <field column="normdate_ss" xpath="/TEI/text/body/p/date/@when" regex="(----)" replaceWith="0101" />
+        <field column="normdate_ss" sourceColName="normdate_ss" regex="(--)" replaceWith="01" />
+        <field column="normdate_ss" sourceColName="normdate_ss" regex="(0000)" replaceWith="0101" />
 
-        <field column="date_ss" sourceColName="fulldate_ss" dateTimeFormat="yyyyMMdd" />
-        <field column="date_dts" sourceColName="fulldate_ss" dateTimeFormat="yyyyMMdd" />
+        <field column="date_dts" sourceColName="normdate_ss" dateTimeFormat="yyyyMMdd" />
 
         <field column="note_ss" xpath="/TEI/teiHeader/fileDesc/notesStmt/note" />
         <field column="idno_ss" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/idno" />
