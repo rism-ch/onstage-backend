@@ -44,12 +44,6 @@
         -->
         <field column="fulldate_ss" xpath="/TEI/text/body/p/date/@when" />
         
-        <field column="normdate_ss" xpath="/TEI/text/body/p/date/@when" regex="(----)" replaceWith="0101" />
-        <field column="normdate_ss" sourceColName="normdate_ss" regex="(--)" replaceWith="01" />
-        <field column="normdate_ss" sourceColName="normdate_ss" regex="(0000)" replaceWith="0101" />
-
-        <field column="date_dts" sourceColName="normdate_ss" dateTimeFormat="yyyyMMdd" />
-
         <field column="note_ss" xpath="/TEI/teiHeader/fileDesc/notesStmt/note" />
         <field column="idno_ss" xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/idno" />
 
