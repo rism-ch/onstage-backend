@@ -1,6 +1,7 @@
 require "csv"
 require "awesome_print"
 require "rexml/document" 
+require 'progress_bar'
 include REXML
 
 files = Dir.glob('tei_output/**/*.xml')
@@ -15,31 +16,31 @@ places = []
 series = []
 titles = []
 
-CSV::foreach("names.csv", col_sep: "\t") do |r|
+CSV::foreach("00_names2.csv", col_sep: "\t") do |r|
     composers << r
 end
 
-CSV::foreach("interpreters.csv", col_sep: "\t") do |r|
+CSV::foreach("00_interpreters2.csv", col_sep: "\t") do |r|
     interpreters << r
 end
 
-CSV::foreach("professors.csv", col_sep: "\t") do |r|
+CSV::foreach("00_professors2.csv", col_sep: "\t") do |r|
     professors << r
 end
 
-CSV::foreach("other.csv", col_sep: "\t") do |r|
+CSV::foreach("00_other2.csv", col_sep: "\t") do |r|
     other << r
 end
 
-CSV::foreach("places.csv", col_sep: "\t") do |r|
+CSV::foreach("00_places2.csv", col_sep: "\t") do |r|
     places << r
 end
 
-CSV::foreach("series.csv", col_sep: "\t") do |r|
+CSV::foreach("00_series2.csv", col_sep: "\t") do |r|
     series << r
 end
 
-CSV::foreach("titles.csv", col_sep: "\t") do |r|
+CSV::foreach("00_titles2.csv", col_sep: "\t") do |r|
     titles << r
 end
 
@@ -90,19 +91,36 @@ def process_title(doc, path, data)
     end
 end
 
+def process_date(doc, path)
+    XPath.each(doc, path) do |name|
+        if name.attributes['when'].include?('--')
+            name.attributes['when'] = name.attributes['when'].gsub('-', '0')
+        end
+    end
+end
+
+pb = ProgressBar.new(files.count) 
 files.each do |file|
 
     doc = REXML::Document.new(File.open(file))
+
+    # For just one
+    #composers = [["Harmonie Nautique ", "Harmonie Nautique"]]
 
     process_name(doc, "/TEI/text/body/p/name[@role='cmp']", composers)
     process_name(doc, "/TEI/text/body/p/name[@role='int']", interpreters)
     process_name(doc, "/TEI/text/body/p/name[@role='prof']", professors)
     process_name(doc, "/TEI/text/body/p/name[@role='var']", other)
 
+    # For manually entered places
+    #places = [["Genève, Kiosque des Bastions ", "Genève, Kiosque des Bastions"]]
     process_key(doc, "/TEI/text/body/p/placeName", places)
+
     process_key(doc, "/TEI/text/body/p/name[@type='series']", series)
 
     process_title(doc, "/TEI/teiHeader/fileDesc/sourceDesc/bibl/title", titles)
+
+    process_date(doc, "/TEI/text/body/p/date")
 
     formatted_xml = ""
     formatter = REXML::Formatters::Pretty.new
@@ -117,4 +135,6 @@ files.each do |file|
     end
 
     #doc.write(File.open(file, "w"))
+    pb.increment!
+
 end
