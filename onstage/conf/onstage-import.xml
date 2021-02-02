@@ -8,16 +8,19 @@
       fileName=".*xml"
       rootEntity="false"
       dataSource="null"
-      baseDir="/Users/xhero/devel/onstage-tei/flat">
+      recursive="true"
+      baseDir="PATH-TO">
 
       <entity name="onstage"
         processor="XPathEntityProcessor"
-      url="${f.fileAbsolutePath}"
+        url="${f.fileAbsolutePath}"
         transformer="DateFormatTransformer,TemplateTransformer,RegexTransformer,LogTransformer"
         forEach="/TEI">
 
         <!-- Pick this value up from the feed level and apply to all documents -->
         <field column="id" template="${f.fileAbsolutePath}" regex="([\w-]+(?:\.\w+)*$)" />
+        
+        <field column="manifest_ss" template="${f.fileAbsolutePath}" regex="PATH-TO" replaceWith=""/>
         
         <field column="composer_ss" xpath="/TEI/text/body/p/name[@role='cmp']" />
         <field column="interpreter_ss" xpath="/TEI/text/body/p/name[@role='int']" />
