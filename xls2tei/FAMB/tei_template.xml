@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+        <titleStmt>
+            <title>Freunde alter Musik Basel</title>
+        </titleStmt>
+        <editionStmt>
+            <edition>TEI P5.1 Edition</edition>
+            <respStmt>
+                <resp>
+                    <persName>Claudio Bacciagaluppi</persName>
+                    <persName>Laurent Pugin</persName>
+                    <persName>Rodolfo Zitellini</persName>
+                    <date when="2021-04">Avril 2021</date>
+                </resp>
+                <name>Bureau Suisse du RISM</name>
+            </respStmt>
+        </editionStmt>
+        <publicationStmt>
+            <publisher><orgName xml:base="http://www.rism-ch.org">Bureau Suisse du RISM</orgName></publisher>
+        </publicationStmt>
+	    <seriesStmt>
+	     <idno type="collection">ch_famb</idno>
+	    </seriesStmt>
+      <sourceDesc>
+		<bibl>
+        $$SRCDESC$$$
+		</bibl>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+        <p> <!-- all the content of the program in one paragraph -->
+            $$CONTENT$$       
+        </p>
+    </body>
+  </text>
+</TEI>

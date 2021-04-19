@@ -54,7 +54,7 @@ def process_name(doc, path, data)
                 else
                     name.text = n.strip
                     name.attributes['key'] = n.strip
-                    #puts "#{old} => #{n}".yellow
+                    puts "#{old} => #{n}".yellow
                 end
             end
         end
@@ -105,22 +105,22 @@ files.each do |file|
     doc = REXML::Document.new(File.open(file))
 
     # For just one
-    #composers = [["Harmonie Nautique ", "Harmonie Nautique"]]
+    interpreters = [["Harmonie Nautique ", "Harmonie Nautique"], ["Corps de musique d'Elite ", "Corps de musique d'Elite"]]
 
-    process_name(doc, "/TEI/text/body/p/name[@role='cmp']", composers)
+    #process_name(doc, "/TEI/text/body/p/name[@role='cmp']", composers)
     process_name(doc, "/TEI/text/body/p/name[@role='int']", interpreters)
-    process_name(doc, "/TEI/text/body/p/name[@role='prof']", professors)
-    process_name(doc, "/TEI/text/body/p/name[@role='var']", other)
+    #process_name(doc, "/TEI/text/body/p/name[@role='prof']", professors)
+    #process_name(doc, "/TEI/text/body/p/name[@role='var']", other)
 
     # For manually entered places
     #places = [["Genève, Kiosque des Bastions ", "Genève, Kiosque des Bastions"]]
-    process_key(doc, "/TEI/text/body/p/placeName", places)
+    #process_key(doc, "/TEI/text/body/p/placeName", places)
 
-    process_key(doc, "/TEI/text/body/p/name[@type='series']", series)
+    #process_key(doc, "/TEI/text/body/p/name[@type='series']", series)
 
-    process_title(doc, "/TEI/teiHeader/fileDesc/sourceDesc/bibl/title", titles)
+    #process_title(doc, "/TEI/teiHeader/fileDesc/sourceDesc/bibl/title", titles)
 
-    process_date(doc, "/TEI/text/body/p/date")
+    #process_date(doc, "/TEI/text/body/p/date")
 
     formatted_xml = ""
     formatter = REXML::Formatters::Pretty.new

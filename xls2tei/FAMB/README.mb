@@ -1,0 +1,1 @@
+The data format for FAMB is a bit different than the "usual" onstage one, hence it has a dedicated script
