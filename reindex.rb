@@ -28,6 +28,8 @@ solr.commit
 files = Dir.glob(DATA_DIR + "/**/*.xml")
 pb = ProgressBar.new(files.count)
 
+bundle = []
+count = 0
 files.each do |file|
     pb.increment!
     next if File.directory?(file)
@@ -57,10 +59,9 @@ files.each do |file|
   
     solr_fields[:title_s] = doc.xpath("/TEI/teiHeader/fileDesc/sourceDesc/bibl/title").collect(&:text)
 
-    #regex="(^[0-9]{4})"
     solr_fields[:year_is] = doc.xpath("/TEI/text/body/p/date/@when").collect do |item|
-        next if !item.text.match("(^[0-9]{4})")
-        item.text.to_i.to_s
+        next if !item.text
+        item.text.match("(^[0-9]{4})")
     end
 
     solr_fields[:fulldate_ss] = doc.xpath("/TEI/text/body/p/date/@when").collect(&:text)
@@ -70,8 +71,23 @@ files.each do |file|
 
     solr_fields[:pages_txt] = doc.xpath("/TEI/text/body/p/page").collect(&:text)
 
-    solr.add(solr_fields)
+    ##solr.add(solr_fields)
+
+    bundle << solr_fields
+    count += 1
+
+    if bundle.count > 100
+        solr.add(bundle)
+        bundle = []
+    end
+
+    if count > 1000
+        count = 0
+        solr.commit
+    end
+
 
 end
 
+solr.add(bundle)
 solr.commit
