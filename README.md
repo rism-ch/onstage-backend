@@ -31,12 +31,13 @@ If everything is ok, solr should be running on ```http://localhost:8983```
 ```
 unzip sample-data/TEI-transform.zip
 ```
+2) The reindex now is done with the bundled reindex.rb script. Just point it to the TEI directory, like the sample-data one and the SOLR server:
 
-2) Modify the SOLR index config file so it finds your directory ```onstage/conf/onstage-import.xml```. You need to set ```basePath``` to the directory that contains the ```TEI-transform/``` dir, and baseDir (circa line 12) to the full path of ```TEI-transform/```.
+```
+ruby reindex.rb ./sample/data http://server.solr:8983/solr/onstage
+```
 
-3) In the SOLR console, select the ```onstage``` core and in ```DataImport``` execute the importer.
-
-4) If everything is good, running an empty query (the default in the query window) should return all records.
+3) If everything is good, running an empty query (the default in the query window) should return all records.
 
 # Data removal
 
@@ -46,7 +47,9 @@ Sometimes it is useful to wipe the index... On the macchine running it:
 curl http://localhost:8983/solr/onstage/update?commit=true -H "Content-Type: text/xml" --data-binary '<delete><query>*:*</query></delete>'
 ```
 
-# Poll the index
+# OBSOLETE ITEMS
+## These are here to have memory of them in case it is ever needed
+
 A status of the import is availabe at ```/solr_status```.
 
 Configuring the GIT auto-pull backend
