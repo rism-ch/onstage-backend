@@ -20,7 +20,7 @@ if !SOLR_HOST
     exit 1
 end
 
-solr = RSolr.connect :url => 'http://localhost:8983/solr/onstage'
+solr = RSolr.connect :url => SOLR_HOST
 
 solr.delete_by_query "*:*"
 solr.commit
