@@ -30,7 +30,7 @@ GEM
       activesupport (>= 3.2.18)
       faraday (>= 0.9)
       json
-    json (2.2.0)
+    json (2.6.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     multipart-post (2.0.0)
