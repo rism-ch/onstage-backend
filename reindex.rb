@@ -1,6 +1,5 @@
 require 'rsolr'
 require 'nokogiri'
-require 'awesome_print'
 require 'progress_bar'
 
 if ARGV.count != 2
