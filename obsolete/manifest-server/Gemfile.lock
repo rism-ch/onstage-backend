@@ -1,13 +1,13 @@
 GIT
-  remote: git://github.com/sinatra/sinatra.git
-  revision: 6f15fba2790ebdf4d1215cebf425dea2ea3130ea
+  remote: https://github.com/sinatra/sinatra.git
+  revision: b4f61f59cf8f938db261a6561a69ca61d01e8581
   specs:
-    rack-protection (2.0.5)
+    rack-protection (3.0.0)
       rack
-    sinatra (2.0.5)
+    sinatra (3.0.0)
       mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.5)
+      rack (~> 2.2)
+      rack-protection (= 3.0.0)
       tilt (~> 2.0)
 
 GEM
@@ -31,18 +31,22 @@ GEM
       faraday (>= 0.9)
       json
     json (2.2.0)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.8.0)
     minitest (5.11.3)
     multipart-post (2.0.0)
-    mustermann (1.0.3)
-    nokogiri (1.10.2)
-      mini_portile2 (~> 2.4.0)
-    rack (2.0.7)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    nokogiri (1.13.4)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    racc (1.6.0)
+    rack (2.2.3)
     rsolr (2.2.1)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
+    ruby2_keywords (0.0.5)
     thread_safe (0.3.6)
-    tilt (2.0.9)
+    tilt (2.0.10)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
 
