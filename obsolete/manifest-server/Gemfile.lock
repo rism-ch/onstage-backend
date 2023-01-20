@@ -1,30 +1,30 @@
 GIT
-  remote: git://github.com/sinatra/sinatra.git
-  revision: 6f15fba2790ebdf4d1215cebf425dea2ea3130ea
+  remote: https://github.com/sinatra/sinatra.git
+  revision: 9b6ba81089244826395577113ac7bac622fdc327
   specs:
-    rack-protection (2.0.5)
+    rack-protection (3.0.5)
       rack
-    sinatra (2.0.5)
-      mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.5)
+    sinatra (3.0.5)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.5)
       tilt (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.3)
+    activesupport (7.0.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 0.7, < 2)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
     awesome_print (1.8.0)
     builder (3.2.3)
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.10)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     git (1.5.0)
-    i18n (1.6.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     iiif-presentation (0.2.0)
       activesupport (>= 3.2.18)
@@ -32,19 +32,20 @@ GEM
       json
     json (2.2.0)
     mini_portile2 (2.4.0)
-    minitest (5.11.3)
+    minitest (5.17.0)
     multipart-post (2.0.0)
-    mustermann (1.0.3)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
     nokogiri (1.10.2)
       mini_portile2 (~> 2.4.0)
-    rack (2.0.7)
+    rack (2.2.6.2)
     rsolr (2.2.1)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
-    thread_safe (0.3.6)
-    tilt (2.0.9)
-    tzinfo (1.2.5)
-      thread_safe (~> 0.1)
+    ruby2_keywords (0.0.5)
+    tilt (2.0.11)
+    tzinfo (2.0.5)
+      concurrent-ruby (~> 1.0)
 
 PLATFORMS
   ruby
