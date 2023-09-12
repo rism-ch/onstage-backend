@@ -49,6 +49,21 @@ fulltext = fulltext.encode('UTF-8', 'UTF-8', :invalid => :replace, :undef => :re
 
 end
 
+
+@dir_mapping = {
+  "BRb.27.2" => "CH-Lz_BRb.27.2",
+  "Ms.N.46 6.3 2" => "CH-Lz_Ms.N.46_6.3_2",
+  "P.b 3606" => "CH-Lz_P.b_3606",
+  "P.b 3608" => "CH-Lz_P.b_3608",
+  "T.a 276,1" => "CH-Lz_T.a_276_1",
+  "Ms.N.46 6.3" => "CH-Lz_Ms.N.46_6.3",
+  "Ms.N.46 6.3 3" => "CH-Lz_Ms.N.46_6.3_3",
+  "P.b 3607" => "CH-Lz_P.b_3607",
+  "T.a 276" => "CH-Lz_T.a_276",
+  "T.a 276,2" => "CH-Lz_T.a_276_2"
+}
+
+
 def process_file(file)
   pages = {}
   current_page = nil
@@ -84,7 +99,7 @@ def process_file(file)
       end
       
       current_page = {
-        dir: "CH_Lz_prg/#{hash_row[:names_ens]}",
+        dir: "CH_Lz_prg/#{@dir_mapping[hash_row[:names_ens]]}",
         page: hash_row[:images],
         date: hash_row[:date],
         index: hash_row[:doc_no],
@@ -172,7 +187,7 @@ def process_file(file)
       srcdesc += "<placeName>#{p}</placeName>\n"
     end
     # FIXME
-    srcdesc += "<orgName role=\"holding\">Archiv des Vereins Freunde alter Musik Basel; <link target=\"http://famb.ch/\"/></orgName>\n"
+    srcdesc += "<orgName role=\"holding\">Zentral- und Hochschulbibliothek Luzern <link target=\"https://www.zhbluzern.ch/\"/></orgName>\n"
     srcdesc += "<idno>#{entry[:shelfmark]}</idno>\n"
     
     # Make the contents
@@ -193,7 +208,7 @@ def process_file(file)
       "<name key=\"#{norm}\" type=\"person\" role=\"int\">#{c}</name>"
     }.join("\n")
   
-    content = "<pb facs=\"#{entry[:dir]}/pyr_#{entry[:image]}.tif\"/>\n"
+    content = "<pb facs=\"#{entry[:dir]}/#{entry[:page]}.tif\"/>\n"
     dates.each do |d|
       content += "<date when=\"#{d[:raw]}\"/>\n"
     end
@@ -204,7 +219,7 @@ def process_file(file)
     content += find_ocr("#{page}.tif") ###"<p>OCR/#{entry[:dir]}/#{page}.txt</p>\n"
   
     entry[:subpages].each do |subpage|
-      content += "<pb facs=\"#{entry[:dir]}/pyr_#{subpage}.tif\"/>\n"
+      content += "<pb facs=\"#{entry[:dir]}/#{subpage}.tif\"/>\n"
       content += find_ocr("#{subpage}.tif") ###"<p>#{subpage}.txt</p>\n"
     end
   
