@@ -16,17 +16,21 @@ def sanitize(str)
 end
 
 OCR_DIR="ocr_output"
-def find_ocr(image_name)
+def find_ocr(dir, image_name)
     pages = []
+    
+      image_name.gsub!("pyr_", "")
 
       fulltext = ""
       name_no_ext = File.basename(image_name, ".tif")
-      name = File.basename(image_name)
+      local_dir = File.basename(dir)
 
-      if !File.exist?(OCR_DIR + "/#{name_no_ext}.txt")
-          puts name_no_ext.red
+      if !File.exist?(OCR_DIR + "/#{local_dir}/#{name_no_ext}.txt")
+          #puts "#{local_dir}/#{name_no_ext}.txt"
+          #puts name_no_ext.red
       else
-          fulltext = File.read(OCR_DIR + "/#{name_no_ext}.txt")#.encode('utf-16', :invalid => :replace, :undef => :replace).strip
+        puts "#{local_dir}/#{name_no_ext}.txt".green
+          fulltext = File.read(OCR_DIR + "/#{local_dir}/#{name_no_ext}.txt")#.encode('utf-16', :invalid => :replace, :undef => :replace).strip
       end
 fulltext = fulltext.encode('UTF-8', 'UTF-8', :invalid => :replace, :undef => :replace).strip
       # Strip all empty or whitespace lines
@@ -146,8 +150,6 @@ def process_file(file)
 
     # First, try to split on the semicolumn
     if entry[:date] == nil
-      puts "#{file}"
-      ap entry
       entry[:date] = "00000000"
     end
     t = entry[:date].split(";")
@@ -181,7 +183,7 @@ def process_file(file)
     
     if entry[:place]
       p = @substitutions[entry[:place].downcase.strip]
-      puts entry[:place].downcase.strip if p == nil
+      #puts entry[:place].downcase.strip if p == nil
       p = entry[:place] if p == nil
 
       srcdesc += "<placeName>#{p}</placeName>\n"
@@ -216,11 +218,11 @@ def process_file(file)
     content += "<title>#{title}</title>\n" if title
     content += "<placeName key=\"#{p}\"/>\n" if p
     content += "<name key=\"#{series}\" type=\"series\"/>\n" if series
-    content += find_ocr("#{page}.tif") ###"<p>OCR/#{entry[:dir]}/#{page}.txt</p>\n"
+    content += find_ocr(entry[:dir], "#{entry[:page]}.tif") ###"<p>OCR/#{entry[:dir]}/#{page}.txt</p>\n"
   
     entry[:subpages].each do |subpage|
       content += "<pb facs=\"#{entry[:dir]}/#{subpage}.tif\"/>\n"
-      content += find_ocr("#{subpage}.tif") ###"<p>#{subpage}.txt</p>\n"
+      content += find_ocr(entry[:dir], "#{subpage}.tif") ###"<p>#{subpage}.txt</p>\n"
     end
   
   
@@ -265,7 +267,7 @@ end
 process_file("onstage_ch_lz.csv")
 
 # Cache names
-puts @irreversible_names.sort.uniq.count
+#puts @irreversible_names.sort.uniq.count
 
 CSV.open("unique_names.csv", "wb") do |csv|
   csv << ["a", "b"]
