@@ -27,9 +27,9 @@ def find_ocr(dir, image_name)
 
       if !File.exist?(OCR_DIR + "/#{local_dir}/#{name_no_ext}.txt")
           #puts "#{local_dir}/#{name_no_ext}.txt"
-          #puts name_no_ext.red
+          puts name_no_ext.red
       else
-        puts "#{local_dir}/#{name_no_ext}.txt".green
+        #puts "#{local_dir}/#{name_no_ext}.txt".green
           fulltext = File.read(OCR_DIR + "/#{local_dir}/#{name_no_ext}.txt")#.encode('utf-16', :invalid => :replace, :undef => :replace).strip
       end
 fulltext = fulltext.encode('UTF-8', 'UTF-8', :invalid => :replace, :undef => :replace).strip

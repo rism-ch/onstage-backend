@@ -13,7 +13,7 @@
                     <persName>Claudio Bacciagaluppi</persName>
                     <persName>Laurent Pugin</persName>
                     <persName>Rodolfo Zitellini</persName>
-                    <date when="2021-04">Avril 2021</date>
+                    <date when="2023-09-14">September 2023</date>
                 </resp>
                 <name>Bureau Suisse du RISM</name>
             </respStmt>
@@ -22,7 +22,7 @@
             <publisher><orgName xml:base="http://www.rism-ch.org">Bureau Suisse du RISM</orgName></publisher>
         </publicationStmt>
 	    <seriesStmt>
-	     <idno type="collection">ch_famb</idno>
+	     <idno type="collection">ch_lz</idno>
 	    </seriesStmt>
       <sourceDesc>
 		<bibl>
