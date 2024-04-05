@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'csv'
-require 'iconv'
+#require 'iconv'
 require 'ap'
 require 'nokogiri'
 require "rexml/document" 
@@ -53,7 +53,7 @@ def process_file(file)
   pages = {}
   current_page = nil
   
-  CSV.foreach(file, {:encoding => "UTF-8"}) do |row|
+  CSV.foreach(file, :encoding => "UTF-8") do |row|
     
     # skip the first image
     next if row[0] == "line_no"
@@ -233,7 +233,7 @@ end
 #@template = File.read('tei_template.xml', "r:UTF-8")
 @template = File.open("tei_template.xml", "r:UTF-8", &:read)
 
-CSV.foreach("norm.csv", {:encoding => "UTF-8"}) do |row|
+CSV.foreach("norm.csv", :encoding => "UTF-8") do |row|
   
   if row[0] != nil
     @substitutions[row[0].downcase.strip] = row[1]
@@ -242,7 +242,7 @@ CSV.foreach("norm.csv", {:encoding => "UTF-8"}) do |row|
 end
 
 
-process_file("example_data.csv")
+process_file("index_FAMB_add_2023.csv")
 
 # Cache names
 puts @irreversible_names.sort.uniq.count
