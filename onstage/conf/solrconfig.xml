@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>8.0.0</luceneMatchVersion>
-  <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-cell-\d.*\.jar" />
-
-  <lib dir="${solr.install.dir:../../../..}/contrib/clustering/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-clustering-\d.*\.jar" />
-
-  <lib dir="${solr.install.dir:../../../..}/contrib/langid/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-langid-\d.*\.jar" />
-
-  <lib dir="${solr.install.dir:../../../..}/contrib/velocity/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-ltr-\d.*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
-  
+  <luceneMatchVersion>10.0.0</luceneMatchVersion>
   <dataDir>${solr.data.dir:}</dataDir>
-  <directoryFactory name="DirectoryFactory"
-                    class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
+  <directoryFactory
+        name="DirectoryFactory"
+        class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"
+    />
 
-  <codecFactory class="solr.SchemaCodecFactory"/>
+  <codecFactory class="solr.SchemaCodecFactory" />
 
   <indexConfig>
     <lockType>${solr.lock.type:native}</lockType>
@@ -27,7 +15,6 @@
   <updateHandler class="solr.DirectUpdateHandler2">
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
-      <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
     </updateLog>
     <autoCommit>
       <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
@@ -39,24 +26,30 @@
   </updateHandler>
   <query>
     <maxBooleanClauses>${solr.max.booleanClauses:1024}</maxBooleanClauses>
-    <filterCache class="solr.search.CaffeineCache"
-                 size="4096"
-                 initialSize="2048"
-                 autowarmCount="2048" />
-    <queryResultCache class="solr.search.CaffeineCache"
-                      size="4096"
-                      initialSize="2048"
-                      autowarmCount="2048" />
+    <filterCache
+            class="solr.search.CaffeineCache"
+            size="4096"
+            initialSize="2048"
+            autowarmCount="2048"
+        />
+    <queryResultCache
+            class="solr.search.CaffeineCache"
+            size="4096"
+            initialSize="2048"
+            autowarmCount="2048"
+        />
     <!--<documentCache class="solr.search.CaffeineCache"
                    size="4096"
                    initialSize="2048"
                    autowarmCount="2048" />-->
-    <cache name="perSegFilter"
-           class="solr.search.CaffeineCache"
-           size="10"
-           initialSize="0"
-           autowarmCount="10"
-           regenerator="solr.NoOpRegenerator" />
+    <cache
+            name="perSegFilter"
+            class="solr.search.CaffeineCache"
+            size="10"
+            initialSize="0"
+            autowarmCount="10"
+            regenerator="solr.NoOpRegenerator"
+        />
     <enableLazyFieldLoading>true</enableLazyFieldLoading>
     <queryResultWindowSize>20</queryResultWindowSize>
     <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
@@ -88,7 +81,11 @@
     </lst>
   </requestHandler>
 
- <requestHandler name="/browse" class="solr.SearchHandler" useParams="query,facets,velocity,browse">
+ <requestHandler
+        name="/browse"
+        class="solr.SearchHandler"
+        useParams="query,facets,velocity,browse"
+    >
     <lst name="defaults">
       <str name="echoParams">explicit</str>
     </lst>
@@ -100,9 +97,11 @@
     </lst>
   </initParams>
 
-  <requestHandler name="/update/extract"
-                  startup="lazy"
-                  class="solr.extraction.ExtractingRequestHandler" >
+  <requestHandler
+        name="/update/extract"
+        startup="lazy"
+        class="solr.extraction.ExtractingRequestHandler"
+    >
     <lst name="defaults">
       <str name="lowernames">true</str>
       <str name="fmap.content">_text_</str>
@@ -156,7 +155,7 @@
     </arr>
   </requestHandler>
 
-  <searchComponent name="tvComponent" class="solr.TermVectorComponent"/>
+  <searchComponent name="tvComponent" class="solr.TermVectorComponent" />
   <requestHandler name="/tvrh" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
       <bool name="tv">true</bool>
@@ -166,7 +165,7 @@
     </arr>
   </requestHandler>
 
-  <searchComponent name="terms" class="solr.TermsComponent"/>
+  <searchComponent name="terms" class="solr.TermsComponent" />
 
   <requestHandler name="/terms" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
@@ -178,7 +177,7 @@
     </arr>
   </requestHandler>
 
-  <searchComponent name="elevator" class="solr.QueryElevationComponent" >
+  <searchComponent name="elevator" class="solr.QueryElevationComponent">
     <!-- pick a fieldType to analyze queries -->
     <str name="queryFieldType">string</str>
   </searchComponent>
@@ -196,16 +195,17 @@
     <highlighting>
       <!-- Configure the standard fragmenter -->
       <!-- This could most likely be commented out in the "default" case -->
-      <fragmenter name="gap"
-                  default="true"
-                  class="solr.highlight.GapFragmenter">
+      <fragmenter
+                name="gap"
+                default="true"
+                class="solr.highlight.GapFragmenter"
+            >
         <lst name="defaults">
           <int name="hl.fragsize">100</int>
         </lst>
       </fragmenter>
 
-      <fragmenter name="regex"
-                  class="solr.highlight.RegexFragmenter">
+      <fragmenter name="regex" class="solr.highlight.RegexFragmenter">
         <lst name="defaults">
           <!-- slightly smaller fragsizes work better because of slop -->
           <int name="hl.fragsize">70</int>
@@ -217,9 +217,11 @@
       </fragmenter>
 
       <!-- Configure the standard formatter -->
-      <formatter name="html"
-                 default="true"
-                 class="solr.highlight.HtmlFormatter">
+      <formatter
+                name="html"
+                default="true"
+                class="solr.highlight.HtmlFormatter"
+            >
         <lst name="defaults">
           <str name="hl.simple.pre"><![CDATA[<em>]]></str>
           <str name="hl.simple.post"><![CDATA[</em>]]></str>
@@ -227,26 +229,33 @@
       </formatter>
 
       <!-- Configure the standard encoder -->
-      <encoder name="html"
-               class="solr.highlight.HtmlEncoder" />
+      <encoder name="html" class="solr.highlight.HtmlEncoder" />
 
       <!-- Configure the standard fragListBuilder -->
-      <fragListBuilder name="simple"
-                       class="solr.highlight.SimpleFragListBuilder"/>
+      <fragListBuilder
+                name="simple"
+                class="solr.highlight.SimpleFragListBuilder"
+            />
 
       <!-- Configure the single fragListBuilder -->
-      <fragListBuilder name="single"
-                       class="solr.highlight.SingleFragListBuilder"/>
+      <fragListBuilder
+                name="single"
+                class="solr.highlight.SingleFragListBuilder"
+            />
 
       <!-- Configure the weighted fragListBuilder -->
-      <fragListBuilder name="weighted"
-                       default="true"
-                       class="solr.highlight.WeightedFragListBuilder"/>
+      <fragListBuilder
+                name="weighted"
+                default="true"
+                class="solr.highlight.WeightedFragListBuilder"
+            />
 
       <!-- default tag FragmentsBuilder -->
-      <fragmentsBuilder name="default"
-                        default="true"
-                        class="solr.highlight.ScoreOrderFragmentsBuilder">
+      <fragmentsBuilder
+                name="default"
+                default="true"
+                class="solr.highlight.ScoreOrderFragmentsBuilder"
+            >
         <!--
         <lst name="defaults">
           <str name="hl.multiValuedSeparatorChar">/</str>
@@ -255,10 +264,14 @@
       </fragmentsBuilder>
 
       <!-- multi-colored tag FragmentsBuilder -->
-      <fragmentsBuilder name="colored"
-                        class="solr.highlight.ScoreOrderFragmentsBuilder">
+      <fragmentsBuilder
+                name="colored"
+                class="solr.highlight.ScoreOrderFragmentsBuilder"
+            >
         <lst name="defaults">
-          <str name="hl.tag.pre"><![CDATA[
+          <str
+                        name="hl.tag.pre"
+                    ><![CDATA[
                <b style="background:yellow">,<b style="background:lawgreen">,
                <b style="background:aquamarine">,<b style="background:magenta">,
                <b style="background:palegreen">,<b style="background:coral">,
@@ -268,17 +281,21 @@
         </lst>
       </fragmentsBuilder>
 
-      <boundaryScanner name="default"
-                       default="true"
-                       class="solr.highlight.SimpleBoundaryScanner">
+      <boundaryScanner
+                name="default"
+                default="true"
+                class="solr.highlight.SimpleBoundaryScanner"
+            >
         <lst name="defaults">
           <str name="hl.bs.maxScan">10</str>
           <str name="hl.bs.chars">.,!? &#9;&#10;&#13;</str>
         </lst>
       </boundaryScanner>
 
-      <boundaryScanner name="breakIterator"
-                       class="solr.highlight.BreakIteratorBoundaryScanner">
+      <boundaryScanner
+                name="breakIterator"
+                class="solr.highlight.BreakIteratorBoundaryScanner"
+            >
         <lst name="defaults">
           <!-- type should be one of CHARACTER, WORD(default), LINE and SENTENCE -->
           <str name="hl.bs.type">WORD</str>
@@ -291,16 +308,34 @@
     </highlighting>
   </searchComponent>
 
-  <updateProcessor class="solr.UUIDUpdateProcessorFactory" name="uuid"/>
-  <updateProcessor class="solr.RemoveBlankFieldUpdateProcessorFactory" name="remove-blank"/>
-  <updateProcessor class="solr.FieldNameMutatingUpdateProcessorFactory" name="field-name-mutating">
+  <updateProcessor class="solr.UUIDUpdateProcessorFactory" name="uuid" />
+  <updateProcessor
+        class="solr.RemoveBlankFieldUpdateProcessorFactory"
+        name="remove-blank"
+    />
+  <updateProcessor
+        class="solr.FieldNameMutatingUpdateProcessorFactory"
+        name="field-name-mutating"
+    >
     <str name="pattern">[^\w-\.]</str>
     <str name="replacement">_</str>
   </updateProcessor>
-  <updateProcessor class="solr.ParseBooleanFieldUpdateProcessorFactory" name="parse-boolean"/>
-  <updateProcessor class="solr.ParseLongFieldUpdateProcessorFactory" name="parse-long"/>
-  <updateProcessor class="solr.ParseDoubleFieldUpdateProcessorFactory" name="parse-double"/>
-  <updateProcessor class="solr.ParseDateFieldUpdateProcessorFactory" name="parse-date">
+  <updateProcessor
+        class="solr.ParseBooleanFieldUpdateProcessorFactory"
+        name="parse-boolean"
+    />
+  <updateProcessor
+        class="solr.ParseLongFieldUpdateProcessorFactory"
+        name="parse-long"
+    />
+  <updateProcessor
+        class="solr.ParseDoubleFieldUpdateProcessorFactory"
+        name="parse-double"
+    />
+  <updateProcessor
+        class="solr.ParseDateFieldUpdateProcessorFactory"
+        name="parse-date"
+    >
     <arr name="format">
       <str>yyyy-MM-dd['T'[HH:mm[:ss[.SSS]][z</str>
       <str>yyyy-MM-dd['T'[HH:mm[:ss[,SSS]][z</str>
@@ -311,7 +346,10 @@
       <str>EEE MMM ppd HH:mm:ss [z ]yyyy</str>
     </arr>
   </updateProcessor>
-  <updateProcessor class="solr.AddSchemaFieldsUpdateProcessorFactory" name="add-schema-fields">
+  <updateProcessor
+        class="solr.AddSchemaFieldsUpdateProcessorFactory"
+        name="add-schema-fields"
+    >
     <lst name="typeMapping">
       <str name="valueClass">java.lang.String</str>
       <str name="fieldType">text_general</str>
@@ -342,16 +380,27 @@
   </updateProcessor>
 
   <!-- The update.autoCreateFields property can be turned to false to disable schemaless mode -->
-  <updateRequestProcessorChain name="add-unknown-fields-to-the-schema" default="${update.autoCreateFields:true}"
-           processor="uuid,remove-blank,field-name-mutating,parse-boolean,parse-long,parse-double,parse-date,add-schema-fields">
-    <processor class="solr.LogUpdateProcessorFactory"/>
-    <processor class="solr.DistributedUpdateProcessorFactory"/>
-    <processor class="solr.RunUpdateProcessorFactory"/>
+  <updateRequestProcessorChain
+        name="add-unknown-fields-to-the-schema"
+        default="${update.autoCreateFields:true}"
+        processor="uuid,remove-blank,field-name-mutating,parse-boolean,parse-long,parse-double,parse-date,add-schema-fields"
+    >
+    <processor class="solr.LogUpdateProcessorFactory" />
+    <processor class="solr.DistributedUpdateProcessorFactory" />
+    <processor class="solr.RunUpdateProcessorFactory" />
   </updateRequestProcessorChain>
 
-  <queryResponseWriter name="velocity" class="solr.VelocityResponseWriter" startup="lazy">
+  <queryResponseWriter
+        name="velocity"
+        class="solr.VelocityResponseWriter"
+        startup="lazy"
+    >
     <str name="template.base.dir">${velocity.template.base.dir:}</str>
-    <str name="solr.resource.loader.enabled">${velocity.solr.resource.loader.enabled:true}</str>
-    <str name="params.resource.loader.enabled">${velocity.params.resource.loader.enabled:false}</str>
+    <str
+            name="solr.resource.loader.enabled"
+        >${velocity.solr.resource.loader.enabled:true}</str>
+    <str
+            name="params.resource.loader.enabled"
+        >${velocity.params.resource.loader.enabled:false}</str>
   </queryResponseWriter>
 </config>
